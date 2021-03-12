@@ -2,9 +2,9 @@
 
 
 struct response {
-	int code;
-	int answer;
-	char* message;
+	int code;		//Response code
+	int answer;		//Answer of calculations
+	char* message;	//Message about response
 };
 
 response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode);
