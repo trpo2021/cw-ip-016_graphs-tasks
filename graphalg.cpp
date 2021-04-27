@@ -3,19 +3,22 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
 using namespace std;
 
+
+
 int main(int argv, char* arg[]) {
-	vector<vector<int> > g;
+	
 	ifstream inp;
 	ofstream out;
-	int a,b;
+	int nodeBeging,nodeEnd;
 	int mode=2;
-	a=-1;
-	b=-1;
+	nodeBeging=-1;
+	nodeEnd=-1;
 	for(int i=1;i<argv;++i) {
 		string t=arg[i];
 		try {
@@ -49,12 +52,12 @@ int main(int argv, char* arg[]) {
 			}
 			
 			int g=stoi(t);
-			if(a==-1) {
-				a=g;
+			if(nodeBeging==-1) {
+				nodeBeging=g;
 				continue;
 			}
-			else if(b==-1) {
-				b=g;
+			else if(nodeEnd==-1) {
+				nodeEnd=g;
 				continue;
 			}
 			else throw "too much arguments ("+t+")";
@@ -72,10 +75,28 @@ int main(int argv, char* arg[]) {
 		
 		
 	}
-	while(!inp.eof()) {
-		string t;
-		inp >> t;
-		cout << t << endl;
+	
+	if(inp.is_open())
+		cin.rdbuf(inp.rdbuf());
+	
+	auto streambuf=cout.rdbuf();
+	if(out.is_open())
+		streambuf=out.rdbuf();
+	ostream baseout(streambuf);
+	
+	int nodeCount, edgeCount;
+	cin >> nodeCount >> edgeCount;
+	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
+	for(int i=0;i<edgeCount;++i) {
+		int a,b,w;
+		cin >> a >> b >> w;
+		g[a-1][b-1]=w;
+	}
+	cout << endl;
+	for(int i=0;i<nodeCount;++i) {
+		for(int j=0;j<nodeCount; ++j)
+			baseout << g[i][j] <<" ";
+		baseout << endl;
 	}
 	if(inp.is_open()) inp.close();
 	if(out.is_open()) out.close();
