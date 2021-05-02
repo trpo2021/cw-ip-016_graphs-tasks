@@ -1,0 +1,34 @@
+APP_NAME=graph
+
+CFLAGS = -Wall -Werror
+CPPFLAGS = -MMD -I src -std=c++11
+CC=g++
+
+SRC_DIR=src
+OBJ_DIR=obj
+APP_DIR=bin
+
+APP_PATH=$(APP_DIR)/$(APP_NAME)
+
+APP_SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
+
+DEPS = $(APP_OBJECTS:.o=.d)
+
+.PHONY: all
+all: $(APP_PATH)
+
+-include $(DEPS)
+
+$(APP_PATH) : $(APP_OBJECTS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+
+$(OBJ_DIR)/%.o : %.cpp
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	
+.PHONY: clean
+clean:
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/*.o
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/*.d
+	$(RM) -rf $(APP_DIR)/$(APP_NAME)
