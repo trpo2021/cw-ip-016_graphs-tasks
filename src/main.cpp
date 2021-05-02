@@ -1,5 +1,5 @@
 //#include <graphtask/graphalg.h>
-#include "graphalg.h"
+#include <graphalg.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
