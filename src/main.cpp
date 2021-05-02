@@ -1,4 +1,3 @@
-//#include <graphtask/graphalg.h>
 #include <graphalg.h>
 #include <vector>
 #include <iostream>
@@ -79,26 +78,43 @@ int main(int argv, char* arg[]) {
 	if(inp.is_open())
 		cin.rdbuf(inp.rdbuf());
 	
+	
+	
+	int nodeCount, edgeCount;
+	if(!(cin >> nodeCount >> edgeCount)) {
+		cout << "count of verticies and edge must be number\n";
+		return 0;
+	}
+	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
+	for(int i=0;i<edgeCount;++i) {
+		int a,b,w;
+		if(!(cin >> a >> b >> w)) {
+			cout << "parameters of each edge must be follow this pattern: [(from verticy) (to verticy) (weight)] all must be number\n";
+			return 0;
+		}
+		g[a-1][b-1]=w;
+	}
+	if(inp.is_open()) inp.close();
+	
 	auto streambuf=cout.rdbuf();
 	if(out.is_open())
 		streambuf=out.rdbuf();
 	ostream baseout(streambuf);
 	
-	int nodeCount, edgeCount;
-	cin >> nodeCount >> edgeCount;
-	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
-	for(int i=0;i<edgeCount;++i) {
-		int a,b,w;
-		cin >> a >> b >> w;
-		g[a-1][b-1]=w;
-	}
 	cout << endl;
 	for(int i=0;i<nodeCount;++i) {
 		for(int j=0;j<nodeCount; ++j)
 			baseout << g[i][j] <<" ";
 		baseout << endl;
 	}
-	if(inp.is_open()) inp.close();
+	switch(mode) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+	}
 	if(out.is_open()) out.close();
 	return 0;
 }
