@@ -107,14 +107,21 @@ int main(int argv, char* arg[]) {
 			baseout << g[i][j] <<" ";
 		baseout << endl;
 	}
+
+	response res;
+
 	switch(mode) {
 		case 0:
+			res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
 			break;
 		case 1:
 			break;
 		case 2:
 			break;
 	}
+
+	baseout << res.answer << endl;
+
 	if(out.is_open()) out.close();
 	return 0;
 }
