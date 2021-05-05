@@ -26,6 +26,9 @@ int main(int argv, char* arg[]) {
 				if(i>=argv) throw string("no argument for -i");
 				string tt=arg[i];
 				inp.open(tt,ifstream::in);
+				if(!inp.is_open()|| inp.bad()) {
+					throw string("File not found");
+				}
 				
 				continue;
 			}
