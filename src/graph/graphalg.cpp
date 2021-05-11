@@ -1,4 +1,4 @@
-#include <graphalg.h>
+#include <graph/graphalg.h>
 
 response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
 	const int INF = 1000000000;

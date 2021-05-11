@@ -10,7 +10,7 @@ APP_DIR=bin
 
 APP_PATH=$(APP_DIR)/$(APP_NAME)
 
-APP_SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+APP_SOURCES = $(wildcard $(SRC_DIR)/$(APP_NAME)/*.cpp)
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
 
@@ -29,6 +29,6 @@ $(OBJ_DIR)/%.o : %.cpp
 	
 .PHONY: clean
 clean:
-	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/*.o
-	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/*.d
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/$(APP_NAME)/*.o
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/$(APP_NAME)/*.d
 	$(RM) -rf $(APP_DIR)/$(APP_NAME)

@@ -1,4 +1,4 @@
-#include <graphalg.h>
+#include <graph/graphalg.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
