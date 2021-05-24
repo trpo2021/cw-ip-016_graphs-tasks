@@ -12,12 +12,17 @@
 #include <iostream>
 #include <string>
 
+
+
+
 std::string mPath;
 
-
-
 int main(int argc, const char *argv[]) {
-	std::string mPath= argv[0];
-	mPath=mPath.substr(0,mPath.rfind("bin"));
+	mPath= argv[0];
+	unsigned int b=mPath.rfind("bin");
+	if(b<mPath.length())
+		mPath=mPath.substr(0,b);
+	else
+		mPath="../";
 	return ctest_main(argc, argv);
 }

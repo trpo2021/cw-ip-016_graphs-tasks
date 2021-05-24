@@ -16,6 +16,7 @@ CTEST_DATA(suite) {
 
 CTEST_SETUP(suite) {
 	data->f.open(mPath+"tests/suite.test");
+	
 	std::cin.rdbuf(data->f.rdbuf());
 	std::cout.rdbuf(data->ss.rdbuf());
 }
@@ -30,10 +31,11 @@ CTEST_TEARDOWN(suite) {
 CTEST2(suite, test1) {
 	data->f.good();
 	const char *args[] = {mPath.c_str(),"4","5","-m","sp"};
+	const std::string result="6\n";
 	nmain(5,args);
 	std::string a=data->ss.str();
 	CTEST_LOG("%s",a.c_str());
-	ASSERT_STR("foo2", "foo");
+	ASSERT_STR(result.c_str(), a.c_str());
 }
 
 
