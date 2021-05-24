@@ -9,9 +9,7 @@
 using namespace std;
 
 
-
-int main(int argv, char* arg[]) {
-	
+int nmain(int argv, const char* arg[]) {
 	ifstream inp;
 	ofstream out;
 	int nodeBeging,nodeEnd;
@@ -78,6 +76,9 @@ int main(int argv, char* arg[]) {
 		
 	}
 	
+	nodeBeging--;
+	nodeEnd--;
+	
 	if(inp.is_open())
 		cin.rdbuf(inp.rdbuf());
 	
@@ -104,12 +105,12 @@ int main(int argv, char* arg[]) {
 		streambuf=out.rdbuf();
 	ostream baseout(streambuf);
 	
-	cout << endl;
+	/*cout << endl;
 	for(int i=0;i<nodeCount;++i) {
 		for(int j=0;j<nodeCount; ++j)
 			baseout << g[i][j] <<" ";
 		baseout << endl;
-	}
+	}*/
 
 	response res;
 
@@ -128,3 +129,10 @@ int main(int argv, char* arg[]) {
 	if(out.is_open()) out.close();
 	return 0;
 }
+
+#ifndef _MTEST
+int main(int argv, const char* arg[]) {
+	
+	nmain(argv,arg);
+}
+#endif
