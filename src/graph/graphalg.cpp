@@ -35,7 +35,7 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 
 bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
 	pColor[v]=1;
-	for(int i=0;i<g[v].size();++i) {
+	for(unsigned int i=0;i<g[v].size();++i) {
 		if(g[v][i]>=0) {
 			if(pColor[i]==0) {
 				if(dfs(g,pColor,i)) return true;
