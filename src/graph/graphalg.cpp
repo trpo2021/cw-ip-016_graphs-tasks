@@ -1,4 +1,6 @@
 #include <graph/graphalg.h>
+#include <queue>
+#include <iostream>
 
 response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
 	const int INF = 1000000000;
@@ -49,7 +51,50 @@ bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
 	return false;
 }
 
-bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode) {
+bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
 	std::vector<char> pColor(n,0);
-	return dfs(g,pColor,fromNode);
+	clearNonPath(g,n,fromNode,toNode);
+	
+	return !dfs(g,pColor,fromNode);
 }
+
+void clearNonPath(std::vector<std::vector<int> > &g, int n, int fromNode, int toNode) {
+	std::vector<int> mark(n,0);
+	std::queue<int> q;
+	q.push(fromNode);
+	int x;
+	mark[fromNode]=1;
+	while(q.size()>0) {
+		x=q.front();
+		q.pop();
+		for(int i=0;i<n;++i) {
+			if(g[x][i]>=0) {
+				if(!(mark[i]&1)) {
+					mark[i]=1;
+					q.push(i);
+				}
+			}
+		}
+	}
+	q.push(toNode);
+	mark[toNode]|=2;
+	while(q.size()>0) {
+		x=q.front();
+		q.pop();
+		for(int i=0;i<n;++i) {
+			if(g[i][x]>=0) {
+				if(!(mark[i]&2)) {
+					mark[i]=mark[i]|2;
+					q.push(i);
+				}
+			}
+		}
+	}
+	for(int i=0;i<n;++i) {
+		for(int j=0;j<n;++j) {
+			if(g[i][j]>=0 && (mark[i]!=3 || mark[j]!=3))
+				g[i][j]=-1;
+		}
+	}
+}
+

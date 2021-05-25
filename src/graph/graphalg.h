@@ -12,7 +12,8 @@ struct response {
 response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode);
 response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode);
 response calcLongestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode);
-bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode);
+bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode, int toNode);   // Check Graph on acycling
+void clearNonPath(std::vector<std::vector<int> > &g, int n, int fromNode, int toNode); // Clear Nodes, that not includes in Path
 
 //g - info about edges of graph
 //n - count of vertices
