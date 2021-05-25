@@ -79,7 +79,7 @@ int nmain(int argv, const char* arg[]) {
 	nodeBeging--;
 	nodeEnd--;
 	
-	if(!(nodeBeging>=0 && nodeEnd>0)) {
+	if(!(nodeBeging>=0 && nodeEnd>=0)) {
 		cout << "no argument for begin node or end node" << endl;
 		return 0;
 	}
@@ -94,6 +94,12 @@ int nmain(int argv, const char* arg[]) {
 		cout << "count of verticies and edge must be number\n";
 		return 0;
 	}
+	
+	if(nodeCount<=nodeBeging || nodeCount <=nodeEnd) {
+		cout << "begin node or end node is not in range\n";
+		return 0;
+	}
+	
 	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
 	for(int i=0;i<edgeCount;++i) {
 		int a,b,w;
