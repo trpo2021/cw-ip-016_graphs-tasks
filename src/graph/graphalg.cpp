@@ -32,3 +32,24 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 	res.answer = vertex[toNode];
 	return res;
 }
+
+bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
+	pColor[v]=1;
+	for(int i=0;i<g[v].size();++i) {
+		if(g[v][i]>=0) {
+			if(pColor[i]==0) {
+				if(dfs(g,pColor,i)) return true;
+			}
+			else if(pColor[i]==1) {
+				return true;
+			}
+		}
+	}
+	pColor[v]=2;
+	return false;
+}
+
+bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode) {
+	std::vector<char> pColor(n,0);
+	return dfs(g,pColor,fromNode);
+}
