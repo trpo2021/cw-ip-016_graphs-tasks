@@ -79,6 +79,11 @@ int nmain(int argv, const char* arg[]) {
 	nodeBeging--;
 	nodeEnd--;
 	
+	if(!(nodeBeging>=0 && nodeEnd>0)) {
+		cout << "no argument for begin node or end node" << endl;
+		return 0;
+	}
+
 	if(inp.is_open())
 		cin.rdbuf(inp.rdbuf());
 	
