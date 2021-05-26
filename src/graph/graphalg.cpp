@@ -50,8 +50,21 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 }
 
 response calcLongestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
-		const int INF = -1000000000;
+	const int INF = -1000000000;
 	response res;
+
+	clearNonPath(g,n,fromNode,toNode);
+
+	bool flag=true;
+
+	for(int i=0;i<n;++i)
+		if(g[fromNode][i]>=0) flag=false;
+
+	if(flag) {
+		res.code=1;
+		res.message="No path";
+		return res;
+	}
 
 	std::vector <int> vertex (n, INF);
 	vertex[fromNode] = 0;
