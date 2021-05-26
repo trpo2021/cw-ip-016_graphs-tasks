@@ -39,23 +39,26 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 
 response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode)
 {
+	response res;
+	if(aCycleGraph(g, n, fromNode, toNode)){
+		
 	int MasIndex[n]={0};			//Массив количества путей из заданной вершины 
 	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой вершины
 	int MCVP2[n]={0};				//Массив колличества выходящих рёбер для каждой вершины
 	int a=fromNode, b=toNode;
 	
-	response res;
+	
 	
 	for(int i=0; i<n; i++)			//Делаю из точки b сток
 	{
-		g[b][i]=0;
+		g[b][i]=-1;
 	}
 	
 	for(int j=0; j<n; j++)			//Заполняю массив MCVP
 	{
 		for(int i=0; i<n; i++)
 		{
-			if(g[i][j]!=0)
+			if(g[i][j]!=-1)
 			{
 				MCVP[j]+=1;
 				MCVP2[i]+=1;
@@ -71,14 +74,15 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 		k=0;
 		for(int j=0; j<n; j++)
 		{
-			if(MCVP[j]=0 and j!=a)
+			if(MCVP[j]==0 && j!=a && MCVP2[j]!=0)
 			{
 				for(int i=0; i<n; i++)
 				{
-					if(g[j][i]!=0)
+					if(g[j][i]!=-1)
 					{
 						MCVP[i]-=1;
-						g[j][i]=0;
+						MCVP2[j]-=1;
+						g[j][i]=-1;
 					}
 				}
 				k+=1;
@@ -95,15 +99,15 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	{
 		for(int j=0; j<n; j++)
 		{
-			if(MCVP[j]==0 and MCVP2[j]!=0)
+			if(MCVP[j]==0 && MCVP2[j]!=0)
 			{
-				for(int i=0; i<n, i++)
+				for(int i=0; i<n; i++)
 				{
-					if(g[j][i]!=0)
+					if(g[j][i]!=-1)
 					{
 						MCVP[i]-=1;
 						MCVP2[j]-=1;					
-						g[j][i]=0;				
+						g[j][i]=-1;				
 						MasIndex[i]+=MasIndex[j];
 					}
 				}
@@ -113,9 +117,16 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	res.code = 0;
 	res.answer =MasIndex[b];
 	
+	
+	}
+	
+	else
+	{
+		res.code = 1;
+		res.answer =-1;
+		res.message = "loop";
+	}
 	return res;
-	
-	
 }
 
 bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
