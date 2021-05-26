@@ -1,17 +1,15 @@
-#include <graph/graphalg.h>
-#include <vector>
-#include <iostream>
 #include <fstream>
+#include <graph/graphalg.h>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using namespace std;
 
 
-
-int main(int argv, char* arg[]) {
-	
+int nmain(int argv, const char* arg[]) {
 	ifstream inp;
 	ofstream out;
 	int nodeBeging,nodeEnd;
@@ -78,6 +76,14 @@ int main(int argv, char* arg[]) {
 		
 	}
 	
+	nodeBeging--;
+	nodeEnd--;
+	
+	if(!(nodeBeging>=0 && nodeEnd>=0)) {
+		cout << "no argument for begin node or end node" << endl;
+		return 0;
+	}
+	
 	if(inp.is_open())
 		cin.rdbuf(inp.rdbuf());
 	
@@ -88,15 +94,26 @@ int main(int argv, char* arg[]) {
 		cout << "count of verticies and edge must be number\n";
 		return 0;
 	}
-	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
-	for(int i=0;i<edgeCount;++i) {
-		int a,b,w;
-		if(!(cin >> a >> b >> w)) {
-			cout << "parameters of each edge must be follow this pattern: [(from verticy) (to verticy) (weight)] all must be number\n";
-			return 0;
-		}
-		g[a-1][b-1]=w;
+	
+	if(nodeCount<=nodeBeging || nodeCount <=nodeEnd) {
+		cout << "begin node or end node is not in range\n";
+		return 0;
 	}
+	
+	vector<vector<int> > g(nodeCount, vector<int>(nodeCount,-1));
+	for (int i = 0; i < edgeCount; ++i) {
+	    int a, b, w;
+	    if (!(cin >> a >> b >> w)) {
+	      cout << "parameters of each edge must be follow this pattern: [(from "
+	              "verticy) (to verticy) (weight)] all must be number\n";
+	      return 0;
+	    }
+	    if (!((a > 0 && a <= nodeCount) && (b > 0 && b <= nodeCount))) {
+	      cout << "information about edges is iscorrect\n";
+	      return 0;
+	    }
+	    g[a - 1][b - 1] = w;
+  	}
 	if(inp.is_open()) inp.close();
 	
 	auto streambuf=cout.rdbuf();
@@ -104,27 +121,42 @@ int main(int argv, char* arg[]) {
 		streambuf=out.rdbuf();
 	ostream baseout(streambuf);
 	
-	cout << endl;
+	/*cout << endl;
 	for(int i=0;i<nodeCount;++i) {
 		for(int j=0;j<nodeCount; ++j)
 			baseout << g[i][j] <<" ";
 		baseout << endl;
-	}
+	}*/
 
-	response res;
+  cout << endl;
+  for (int i = 0; i < nodeCount; ++i) {
+    for (int j = 0; j < nodeCount; ++j)
+      baseout << g[i][j] << " ";
+    baseout << endl;
+  }
 
-	switch(mode) {
-		case 0:
-			res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-	}
+  response res;
+
+  switch (mode) {
+  	case 0:
+    	res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
+    	break;
+  	case 1:
+    	break;
+  	case 2:
+    	break;
+  }
 
 	baseout << res.answer << endl;
 
-	if(out.is_open()) out.close();
+	if (out.is_open())
+		out.close();
 	return 0;
 }
+
+#ifndef _MTEST
+int main(int argv, const char* arg[]) {
+	
+	nmain(argv,arg);
+}
+#endif

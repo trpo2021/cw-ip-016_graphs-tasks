@@ -1,4 +1,6 @@
 #include <graph/graphalg.h>
+#include <queue>
+#include <iostream>
 
 response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
 	const int INF = 1000000000;
@@ -37,9 +39,12 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 
 response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode)
 {
-	int MasIndex[n]={0};			//Массив количества путей из заданной точки 
-	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой точки
+	int MasIndex[n]={0};			//Массив количества путей из заданной вершины 
+	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой вершины
+	int MCVP2[n]={0};				//Массив колличества выходящих рёбер для каждой вершины
 	int a=fromNode, b=toNode;
+	
+	response res;
 	
 	for(int i=0; i<n; i++)			//Делаю из точки b сток
 	{
@@ -53,6 +58,7 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 			if(g[i][j]!=0)
 			{
 				MCVP[j]+=1;
+				MCVP2[i]+=1;
 			}
 		}
 	}
@@ -89,19 +95,89 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	{
 		for(int j=0; j<n; j++)
 		{
-			if(MCVP[j]==0)
+			if(MCVP[j]==0 and MCVP2[j]!=0)
 			{
 				for(int i=0; i<n, i++)
 				{
 					if(g[j][i]!=0)
 					{
-						MCVP[i]-=1;					
-						g[j][i]=0;					
+						MCVP[i]-=1;
+						MCVP2[j]-=1;					
+						g[j][i]=0;				
 						MasIndex[i]+=MasIndex[j];
 					}
 				}
 			}
 		}
 	}
+	res.code = 0;
+	res.answer =MasIndex[b];
 	
+	return res;
+	
+	
+}
+
+bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
+	pColor[v]=1;
+	for(unsigned int i=0;i<g[v].size();++i) {
+		if(g[v][i]>=0) {
+			if(pColor[i]==0) {
+				if(dfs(g,pColor,i)) return true;
+			}
+			else if(pColor[i]==1) {
+				return true;
+			}
+		}
+	}
+	pColor[v]=2;
+	return false;
+}
+
+bool aCycleGraph(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
+	std::vector<char> pColor(n,0);
+	clearNonPath(g,n,fromNode,toNode);
+	
+	return !dfs(g,pColor,fromNode);
+}
+
+void clearNonPath(std::vector<std::vector<int> > &g, int n, int fromNode, int toNode) {
+	std::vector<int> mark(n,0);
+	std::queue<int> q;
+	q.push(fromNode);
+	int x;
+	mark[fromNode]=1;
+	while(q.size()>0) {
+		x=q.front();
+		q.pop();
+		for(int i=0;i<n;++i) {
+			if(g[x][i]>=0) {
+				if(!(mark[i]&1)) {
+					mark[i]=1;
+					q.push(i);
+				}
+			}
+		}
+	}
+	q.push(toNode);
+	mark[toNode]|=2;
+	while(q.size()>0) {
+		x=q.front();
+		q.pop();
+		for(int i=0;i<n;++i) {
+			if(g[i][x]>=0) {
+				if(!(mark[i]&2)) {
+					mark[i]=mark[i]|2;
+					q.push(i);
+				}
+			}
+		}
+	}
+
+	for(int i=0;i<n;++i) {
+		for(int j=0;j<n;++j) {
+			if(g[i][j]>=0 && (mark[i]!=3 || mark[j]!=3))
+				g[i][j]=-1;
+		}
+	}
 }
