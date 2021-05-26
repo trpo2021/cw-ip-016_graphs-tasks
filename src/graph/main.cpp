@@ -142,6 +142,7 @@ int nmain(int argv, const char* arg[]) {
     	res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
     	break;
   	case 1:
+	  	res = calcLongestPath(g, nodeCount, nodeBeging, nodeEnd);
     	break;
   	case 2:
     	break;
