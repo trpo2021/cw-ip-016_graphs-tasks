@@ -32,3 +32,76 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 	res.answer = vertex[toNode];
 	return res;
 }
+
+
+
+response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode)
+{
+	int MasIndex[n]={0};			//Массив количества путей из заданной точки 
+	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой точки
+	int a=fromNode, b=toNode;
+	
+	for(int i=0; i<n; i++)			//Делаю из точки b сток
+	{
+		g[b][i]=0;
+	}
+	
+	for(int j=0; j<n; j++)			//Заполняю массив MCVP
+	{
+		for(int i=0; i<n; i++)
+		{
+			if(g[i][j]!=0)
+			{
+				MCVP[j]+=1;
+			}
+		}
+	}
+	
+	
+	int k=1;
+	
+	while(k!=0)						//Убираю все истоки кроме изначальной точки тем самым делая из неё исток
+	{
+		k=0;
+		for(int j=0; j<n; j++)
+		{
+			if(MCVP[j]=0 and j!=a)
+			{
+				for(int i=0; i<n; i++)
+				{
+					if(g[j][i]!=0)
+					{
+						MCVP[i]-=1;
+						g[j][i]=0;
+					}
+				}
+				k+=1;
+			}
+			
+		}
+				
+	}
+	
+	
+	MasIndex[a]=1;
+	
+	while(MCVP[b]!=0)									//Нахожу количество путей из точки a в точку b
+	{
+		for(int j=0; j<n; j++)
+		{
+			if(MCVP[j]==0)
+			{
+				for(int i=0; i<n, i++)
+				{
+					if(g[j][i]!=0)
+					{
+						MCVP[i]-=1;					
+						g[j][i]=0;					
+						MasIndex[i]+=MasIndex[j];
+					}
+				}
+			}
+		}
+	}
+	
+}
