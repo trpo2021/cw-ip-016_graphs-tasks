@@ -91,6 +91,98 @@ response calcLongestPath(std::vector<std::vector<int> > g, int n, int fromNode, 
 	return res;
 }
 
+response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, int toNode)
+{
+	response res;
+	if(aCycleGraph(g, n, fromNode, toNode)){
+		
+	int MasIndex[n]={0};			//Массив количества путей из заданной вершины 
+	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой вершины
+	int MCVP2[n]={0};				//Массив колличества выходящих рёбер для каждой вершины
+	int a=fromNode, b=toNode;
+	
+	
+	
+	for(int i=0; i<n; i++)			//Делаю из точки b сток
+	{
+		g[b][i]=-1;
+	}
+	
+	for(int j=0; j<n; j++)			//Заполняю массив MCVP
+	{
+		for(int i=0; i<n; i++)
+		{
+			if(g[i][j]!=-1)
+			{
+				MCVP[j]+=1;
+				MCVP2[i]+=1;
+			}
+		}
+	}
+	
+	
+	int k=1;
+	
+	while(k!=0)						//Убираю все истоки кроме изначальной точки тем самым делая из неё исток
+	{
+		k=0;
+		for(int j=0; j<n; j++)
+		{
+			if(MCVP[j]==0 && j!=a && MCVP2[j]!=0)
+			{
+				for(int i=0; i<n; i++)
+				{
+					if(g[j][i]!=-1)
+					{
+						MCVP[i]-=1;
+						MCVP2[j]-=1;
+						g[j][i]=-1;
+					}
+				}
+				k+=1;
+			}
+			
+		}
+				
+	}
+	
+	
+	MasIndex[a]=1;
+	
+	while(MCVP[b]!=0)									//Нахожу количество путей из точки a в точку b
+	{
+		for(int j=0; j<n; j++)
+		{
+			if(MCVP[j]==0 && MCVP2[j]!=0)
+			{
+				for(int i=0; i<n; i++)
+				{
+					if(g[j][i]!=-1)
+					{
+						MCVP[i]-=1;
+						MCVP2[j]-=1;					
+						g[j][i]=-1;				
+						MasIndex[i]+=MasIndex[j];
+					}
+				}
+			}
+		}
+	}
+	res.code = 0;
+	res.answer =MasIndex[b];
+	
+	
+	}
+	
+	else
+	{
+		res.code = 1;
+		res.answer =-1;
+		res.message = "loop";
+	}
+	return res;
+}
+
 bool dfs(std::vector<std::vector<int> > &g, std::vector<char> &pColor, int v) {
 	pColor[v]=1;
 	for(unsigned int i=0;i<g[v].size();++i) {
@@ -146,6 +238,7 @@ void clearNonPath(std::vector<std::vector<int> > &g, int n, int fromNode, int to
 			}
 		}
 	}
+
 	for(int i=0;i<n;++i) {
 		for(int j=0;j<n;++j) {
 			if(g[i][j]>=0 && (mark[i]!=3 || mark[j]!=3))
@@ -153,4 +246,3 @@ void clearNonPath(std::vector<std::vector<int> > &g, int n, int fromNode, int to
 		}
 	}
 }
-

@@ -145,10 +145,15 @@ int nmain(int argv, const char* arg[]) {
 	  	res = calcLongestPath(g, nodeCount, nodeBeging, nodeEnd);
     	break;
   	case 2:
+  		res = calcCountPaths(g, nodeCount, nodeBeging, nodeEnd);
     	break;
   }
-
-	baseout << res.answer << endl;
+	if(res.code==0) {
+		baseout << res.answer << endl;
+	}
+	else {
+		baseout << res.message << endl;
+	}
 
 	if (out.is_open())
 		out.close();
