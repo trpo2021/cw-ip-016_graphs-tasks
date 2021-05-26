@@ -128,30 +128,22 @@ int nmain(int argv, const char* arg[]) {
 		baseout << endl;
 	}*/
 
-  cout << endl;
-  for (int i = 0; i < nodeCount; ++i) {
-    for (int j = 0; j < nodeCount; ++j)
-      baseout << g[i][j] << " ";
-    baseout << endl;
-  }
+  	response res;
 
-  response res;
-
-  switch (mode) {
-  	case 0:
-    	res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
-    	break;
-  	case 1:
-	  	res = calcLongestPath(g, nodeCount, nodeBeging, nodeEnd);
-    	break;
-  	case 2:
-  		res = calcCountPaths(g, nodeCount, nodeBeging, nodeEnd);
-    	break;
-  }
+  	switch (mode) {
+	  	case 0:
+	    	res = calcShortestPath(g, nodeCount, nodeBeging, nodeEnd);
+	    	break;
+	  	case 1:
+		  	res = calcLongestPath(g, nodeCount, nodeBeging, nodeEnd);
+	    	break;
+	  	case 2:
+	  		res = calcCountPaths(g ,nodeCount, nodeBeging, nodeEnd);
+	    	break;
+  	}
 	if(res.code==0) {
 		baseout << res.answer << endl;
-	}
-	else {
+	} else {
 		baseout << res.message << endl;
 	}
 
