@@ -7,6 +7,19 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 	const int INF = 1000000000;
 	response res;
 
+	clearNonPath(g,n,fromNode,toNode);
+
+	bool flag=true;
+
+	for(int i=0;i<n;++i)
+		if(g[fromNode][i]>=0) flag=false;
+
+	if(flag) {
+		res.code=1;
+		res.message="No path";
+		return res;
+	}
+
 	std::vector <int> vertex (n, INF);
 	vertex[fromNode] = 0;
 
@@ -37,8 +50,21 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 }
 
 response calcLongestPath(std::vector<std::vector<int> > g, int n, int fromNode, int toNode) {
-		const int INF = -1000000000;
+	const int INF = -1000000000;
 	response res;
+
+	clearNonPath(g,n,fromNode,toNode);
+
+	bool flag=true;
+
+	for(int i=0;i<n;++i)
+		if(g[fromNode][i]>=0) flag=false;
+
+	if(flag) {
+		res.code=1;
+		res.message="No path";
+		return res;
+	}
 
 	std::vector <int> vertex (n, INF);
 	vertex[fromNode] = 0;
@@ -96,19 +122,19 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	response res;
 	if(aCycleGraph(g, n, fromNode, toNode)){
 		
-	int MasIndex[n]={0};			//Массив количества путей из заданной вершины 
-	int MCVP[n]={0};				//Массив колличества входящих рёбер для каждой вершины
-	int MCVP2[n]={0};				//Массив колличества выходящих рёбер для каждой вершины
+	int MasIndex[n]={0};			//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+	int MCVP[n]={0};				//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	int MCVP2[n]={0};				//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int a=fromNode, b=toNode;
 	
 	
 	
-	for(int i=0; i<n; i++)			//Делаю из точки b сток
+	for(int i=0; i<n; i++)			//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ b пїЅпїЅпїЅпїЅ
 	{
 		g[b][i]=-1;
 	}
 	
-	for(int j=0; j<n; j++)			//Заполняю массив MCVP
+	for(int j=0; j<n; j++)			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MCVP
 	{
 		for(int i=0; i<n; i++)
 		{
@@ -123,7 +149,7 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	
 	int k=1;
 	
-	while(k!=0)						//Убираю все истоки кроме изначальной точки тем самым делая из неё исток
+	while(k!=0)						//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	{
 		k=0;
 		for(int j=0; j<n; j++)
@@ -149,7 +175,7 @@ response calcCountPaths(std::vector<std::vector<int> > g, int n, int fromNode, i
 	
 	MasIndex[a]=1;
 	
-	while(MCVP[b]!=0)									//Нахожу количество путей из точки a в точку b
+	while(MCVP[b]!=0)									//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ a пїЅ пїЅпїЅпїЅпїЅпїЅ b
 	{
 		for(int j=0; j<n; j++)
 		{
