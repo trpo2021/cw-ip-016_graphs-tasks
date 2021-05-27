@@ -37,7 +37,6 @@ CTEST2(suite, test1) {
 	const std::string result="6\n";
 	nmain(5,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -48,7 +47,6 @@ CTEST2(suite, test2) {
 	const std::string result="no argument for -m\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -58,7 +56,6 @@ CTEST2(suite, test3) {
 	const std::string result="invalid argument for -m, expected [sp, lp, cp], found bb\n";
 	nmain(5,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -68,7 +65,6 @@ CTEST2(suite, test4) {
 	const std::string result="no argument for -i\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -78,7 +74,6 @@ CTEST2(suite, test5) {
 	const std::string result="no argument for -o\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -88,7 +83,6 @@ CTEST2(suite, test6) {
 	const std::string result="too much arguments (6)\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -98,7 +92,6 @@ CTEST2(suite, test7) {
 	const std::string result="what is boba?\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -108,7 +101,6 @@ CTEST2(suite, test8) {
 	const std::string result="File not found\n";
 	nmain(5,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -118,7 +110,6 @@ CTEST2(suite, test9) {
 	const std::string result="no argument for begin node or end node\n";
 	nmain(4,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -128,7 +119,6 @@ CTEST2(suite, test10) {
 	const std::string result="begin node or end node is not in range\n";
 	nmain(3,args);
 	std::string a=data->ss.str();
-	CTEST_LOG("%s",a.c_str());
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
@@ -145,7 +135,6 @@ CTEST(cycle, test1) {
 	std::string a="";
 	if(f.is_open()) {
 		f >> a;
-		CTEST_LOG("%s",a.c_str());
 		f.close();
 		std::remove(po.c_str());
 	}
@@ -197,6 +186,7 @@ CTEST2(serr, test3) {
 	a=data->ss.str();
 	ASSERT_STR(result.c_str(), a.c_str());
 }
+
 CTEST(calc, shortest) {
 	const int n=4;
 	std::vector<std::vector<int> > g = {
@@ -210,7 +200,64 @@ CTEST(calc, shortest) {
 	ASSERT_EQUAL(res.answer, 3);
 }
 
+CTEST(calc, shortest2) {
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,-1},
+	{-1,-1,2,-1},
+	{-1,-1,-1,-1},
+	{-1,1,-1,-1}
+	};
+	response res=calcShortestPath(g,n,0,3);
+	std::string result = "No path";
+	ASSERT_EQUAL(res.code, 1);
+	ASSERT_STR(res.message.c_str(),result.c_str());
+}
 
+CTEST(calc, shortest3) {
+	const int n=6;
+	std::vector<std::vector<int> > g = {
+	{-1, 13, 6, 7, -1, -1 },
+	{13, -1, -1, -1, -1, 10},
+	{6, -1, -1, 20, 1, -1 }, 
+	{7, 9, 20, -1, 13, 12},
+	{-1, -1, 1, 13, -1, 4},
+	{-1, 10, -1, 12, 4, -1} 
+	};
+	response res=calcShortestPath(g,n,0,4);
+	ASSERT_EQUAL(0, res.code);
+	ASSERT_EQUAL(7, res.answer);
+}
+
+CTEST(calc, shortest4) {
+	const int n=6;
+	std::vector<std::vector<int> > g = {
+	{-1, 13, 6, 7, -1, -1 },
+	{13, -1, -1, -1, -1, 10},
+	{6, -1, -1, 20, 1, -1 }, 
+	{7, 9, 20, -1, 13, 12},
+	{-1, -1, 1, 13, -1, 4},
+	{-1, 10, -1, 12, 4, -1} 
+	};
+	response res=calcShortestPath(g,n,4,1);
+	ASSERT_EQUAL(0, res.code);
+	ASSERT_EQUAL(14, res.answer);
+}
+
+CTEST(calc, shortest5) {
+	const int n=6;
+	std::vector<std::vector<int> > g = {
+	{-1, 13, 6, 7, -1, -1 },
+	{13, -1, -1, -1, -1, 10},
+	{6, -1, -1, 20, 1, -1 }, 
+	{7, 9, 20, -1, 13, 12},
+	{-1, -1, 1, 13, -1, 4},
+	{-1, 10, -1, 12, 4, -1} 
+	};
+	response res=calcShortestPath(g,n,3,2);
+	ASSERT_EQUAL(0, res.code);
+	ASSERT_EQUAL(13, res.answer);
+}
 
 
 
