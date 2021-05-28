@@ -196,11 +196,11 @@ CTEST(calc, shortest) {
 	{-1,1,-1,-1}
 	};
 	response res=calcShortestPath(g,n,0,3);
-	ASSERT_EQUAL(res.code, 0);
-	ASSERT_EQUAL(res.answer, 3);
+	ASSERT_EQUAL(0, res.code);
+	ASSERT_EQUAL(3, res.answer);
 }
 
-CTEST(calc, shortest2) {
+CTEST(calc, shortest2) { // graph with no path from A to B
 	const int n=4;
 	std::vector<std::vector<int> > g = {
 	{-1,3,2,-1},
@@ -210,8 +210,8 @@ CTEST(calc, shortest2) {
 	};
 	response res=calcShortestPath(g,n,0,3);
 	std::string result = "No path";
-	ASSERT_EQUAL(res.code, 1);
-	ASSERT_STR(res.message.c_str(),result.c_str());
+	ASSERT_EQUAL(1,res.code);
+	ASSERT_STR(result.c_str(), res.message.c_str());
 }
 
 CTEST(calc, shortest3) {
@@ -260,7 +260,7 @@ CTEST(calc, shortest5) {
 }
 
 
-CTEST(calc, longest1) {
+CTEST(calc, longest1) { // graph with cycle in path
 	const int n=6;
 	std::vector<std::vector<int> > g = {
 	{-1, 13, 6, 7, -1, -1 },
@@ -275,7 +275,7 @@ CTEST(calc, longest1) {
 	ASSERT_STR("loop", res.message.c_str());
 }
 
-CTEST(calc, longest2) {
+CTEST(calc, longest2) { // graph with cycle in path
 	const int n=4;
 	std::vector<std::vector<int> > g = {
 	{-1,3,2,-1},
@@ -284,11 +284,11 @@ CTEST(calc, longest2) {
 	{-1,1,-1,-1}
 	};
 	response res=calcLongestPath(g,n,0,3);
-	ASSERT_EQUAL(res.code, 0);
-	ASSERT_EQUAL(res.answer, 6);
+	ASSERT_EQUAL(1, res.code);
+	ASSERT_STR("loop", res.message.c_str());
 }
 
-CTEST(calc, longest3) {
+CTEST(calc, longest3) { // graph with cycle in non path
 	const int n=4;
 	std::vector<std::vector<int> > g = {
 	{-1,3,2,3},
@@ -297,9 +297,81 @@ CTEST(calc, longest3) {
 	{-1,1,-1,-1}
 	};
 	response res=calcLongestPath(g,n,0,3);
-	ASSERT_EQUAL(res.code, 0);
-	ASSERT_EQUAL(res.answer, 3);
+	ASSERT_EQUAL(0,res.code);
+	ASSERT_EQUAL(3, res.answer);
 }
+
+
+CTEST(calc, longest4) { // graph with no path from A to B
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,-1},
+	{-1,-1,2,-1},
+	{-1,1,-1,-1},
+	{-1,2,-1,-1}
+	};
+	response res=calcLongestPath(g,n,0,3);
+	ASSERT_EQUAL(1,res.code);
+	ASSERT_STR("No path", res.message.c_str());
+}
+
+
+CTEST(calc, count1) { // graph with cycle in path
+	const int n=6;
+	std::vector<std::vector<int> > g = {
+	{-1, 13, 6, 7, -1, -1 },
+	{13, -1, -1, -1, -1, 10},
+	{6, -1, -1, 20, 1, -1 }, 
+	{7, 9, 20, -1, 13, 12},
+	{-1, -1, 1, 13, -1, 4},
+	{-1, 10, -1, 12, 4, -1} 
+	};
+	response res=calcCountPaths(g,n,0,4);
+	ASSERT_EQUAL(1, res.code);
+	ASSERT_STR("loop", res.message.c_str());
+}
+
+
+CTEST(calc, count2) { // graph with cycle in non path
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,3},
+	{-1,-1,2,-1},
+	{-1,1,-1,-1},
+	{-1,1,-1,-1}
+	};
+	response res=calcCountPaths(g,n,0,3);
+	ASSERT_EQUAL(0,res.code);
+	ASSERT_EQUAL(1, res.answer);
+}
+
+CTEST(calc, count3) {
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,3},
+	{-1,-1,2,-1},
+	{-1,-1,-1,1},
+	{-1,-1,-1,-1}
+	};
+	response res=calcCountPaths(g,n,0,3);
+	ASSERT_EQUAL(0,res.code);
+	ASSERT_EQUAL(3, res.answer);
+}
+
+
+CTEST(calc, count4) { // graph with no paths from A to B
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,-1},
+	{-1,-1,2,-1},
+	{-1,3,-1,-1},
+	{-1, 3,-1,-1}
+	};
+	response res=calcCountPaths(g,n,0,3);
+	ASSERT_EQUAL(0,res.code);
+	ASSERT_EQUAL(0, res.answer);
+}
+
 
 
 
