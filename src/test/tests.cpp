@@ -260,6 +260,19 @@ CTEST(calc, shortest5) {
 }
 
 
-
+CTEST(calc, longest1) {
+	const int n=6;
+	std::vector<std::vector<int> > g = {
+	{-1, 13, 6, 7, -1, -1 },
+	{13, -1, -1, -1, -1, 10},
+	{6, -1, -1, 20, 1, -1 }, 
+	{7, 9, 20, -1, 13, 12},
+	{-1, -1, 1, 13, -1, 4},
+	{-1, 10, -1, 12, 4, -1} 
+	};
+	response res=calcLongestPath(g,n,0,4);
+	ASSERT_EQUAL(0, res.code);
+	ASSERT_EQUAL(13, res.answer);
+}
 
 
