@@ -271,8 +271,36 @@ CTEST(calc, longest1) {
 	{-1, 10, -1, 12, 4, -1} 
 	};
 	response res=calcLongestPath(g,n,0,4);
-	ASSERT_EQUAL(0, res.code);
-	ASSERT_EQUAL(13, res.answer);
+	ASSERT_EQUAL(1, res.code);
+	ASSERT_STR("loop", res.message.c_str());
 }
+
+CTEST(calc, longest2) {
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,-1},
+	{-1,-1,2,-1},
+	{-1,-1,-1,1},
+	{-1,1,-1,-1}
+	};
+	response res=calcLongestPath(g,n,0,3);
+	ASSERT_EQUAL(res.code, 0);
+	ASSERT_EQUAL(res.answer, 6);
+}
+
+CTEST(calc, longest3) {
+	const int n=4;
+	std::vector<std::vector<int> > g = {
+	{-1,3,2,3},
+	{-1,-1,2,-1},
+	{-1,1,-1,-1},
+	{-1,1,-1,-1}
+	};
+	response res=calcLongestPath(g,n,0,3);
+	ASSERT_EQUAL(res.code, 0);
+	ASSERT_EQUAL(res.answer, 3);
+}
+
+
 
 
