@@ -83,7 +83,7 @@ int nmain(int argv, const char* arg[]) {
 		cout << "no argument for begin node or end node" << endl;
 		return 0;
 	}
-	
+
 	if(inp.is_open())
 		cin.rdbuf(inp.rdbuf());
 	
