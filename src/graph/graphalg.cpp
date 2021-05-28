@@ -53,6 +53,12 @@ response calcLongestPath(std::vector<std::vector<int> > g, int n, int fromNode, 
 	const int INF = -1000000000;
 	response res;
 
+	if(!aCycleGraph(g,n,fromNode,toNode)) {
+		res.code = 1;
+		res.message = "loop";
+		return res;
+	}
+
 	clearNonPath(g,n,fromNode,toNode);
 
 	bool flag=true;
