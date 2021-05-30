@@ -46,6 +46,13 @@ response calcShortestPath(std::vector<std::vector<int> > g, int n, int fromNode,
 
 	res.code = 0;
 	res.answer = vertex[toNode];
+
+	if (res.answer == INF) {
+		res.code=1;
+		res.message = "weight is too large";
+		return res;
+	}
+	
 	return res;
 }
 
