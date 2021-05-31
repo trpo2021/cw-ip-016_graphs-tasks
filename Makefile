@@ -1,0 +1,65 @@
+APP_NAME=graph
+
+CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -MMD -I src -std=c++11
+TESTFLAGS = -D_MTEST
+CC=g++
+
+SRC_DIR=src
+OBJ_DIR=obj
+APP_DIR=bin
+
+APP_PATH = $(APP_DIR)/$(APP_NAME)
+TEST_PATH = $(APP_DIR)/test
+
+APP_SOURCES = $(wildcard $(SRC_DIR)/$(APP_NAME)/*.cpp)
+APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
+TEST_SOURCES = $(wildcard $(SRC_DIR)/test/*.cpp)
+TEST_OBJECTS = $(TEST_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/test/%.o)
+
+TEST_APP_SOURCES = $(wildcard $(SRC_DIR)/$(APP_NAME)/*.cpp)
+TEST_APP_OBJECTS = $(TEST_APP_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/test/%.o)
+
+
+DEPS = $(APP_OBJECTS:.o=.d)
+TEST_DEPS = $(TEST_OBJECTS:.o=.d) $(TEST_APP_OBJECTS:.o=.d)
+
+.PHONY: all
+all: $(APP_PATH)
+
+	$(eval TESTFLAGS := -D_MTEST)
+
+.PHONY: test
+test: $(TEST_PATH)
+
+
+
+-include $(DEPS)
+-include $(TEST_DEPS)
+
+$(TEST_PATH) : $(TEST_APP_OBJECTS) $(TEST_OBJECTS)
+	$(CC) $^ -o $@ $(CPPFLAGS) $(CFLAGS) 
+
+$(APP_PATH) : $(APP_OBJECTS)
+	$(CC) $^ -o $@ $(CPPFLAGS) $(CFLAGS) 
+
+$(OBJ_DIR)/%.o : %.cpp
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/test/%.o : $(SRC_DIR)/%.cpp
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(TESTFLAGS) -c $< -o $@	
+
+	
+.PHONY: clean
+clean:
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/$(APP_NAME)/*.o
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/$(APP_NAME)/*.d
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/test/*.o
+	$(RM) -rf $(OBJ_DIR)/$(SRC_DIR)/test/*.d
+	$(RM) -rf $(OBJ_DIR)/test/$(APP_NAME)/*.o
+	$(RM) -rf $(OBJ_DIR)/test/$(APP_NAME)/*.d
+	$(RM) -rf $(OBJ_DIR)/test/test/*.o
+	$(RM) -rf $(OBJ_DIR)/test/test/*.d
+	$(RM) -rf $(APP_DIR)/$(APP_NAME)
+	$(RM) -rf $(APP_DIR)/test
