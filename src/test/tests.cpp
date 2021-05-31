@@ -187,6 +187,28 @@ CTEST2(serr, test3) {
 	ASSERT_STR(result.c_str(), a.c_str());
 }
 
+CTEST2(serr, test4) {
+	std::string p=mPath+"tests/bigedge.test";
+	
+	const char *args[] = {mPath.c_str(),"1","4","-m","sp","-i",p.c_str()};
+	nmain(7,args);
+	std::string result="information about edges is iscorrect\n";
+	std::string a="";
+	a=data->ss.str();
+	ASSERT_STR(result.c_str(), a.c_str());
+}
+
+CTEST2(serr, test5) {
+	std::string p=mPath+"tests/smalledge.test";
+	
+	const char *args[] = {mPath.c_str(),"1","4","-m","sp","-i",p.c_str()};
+	nmain(7,args);
+	std::string result="information about edges is iscorrect\n";
+	std::string a="";
+	a=data->ss.str();
+	ASSERT_STR(result.c_str(), a.c_str());
+}
+
 CTEST(calc, shortest) {
 	const int n=4;
 	std::vector<std::vector<int> > g = {
