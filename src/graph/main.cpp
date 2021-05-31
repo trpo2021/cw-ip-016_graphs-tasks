@@ -108,7 +108,7 @@ int nmain(int argv, const char* arg[]) {
 	              "verticy) (to verticy) (weight)] all must be number\n";
 	      return 0;
 	    }
-	    if (!((a > 0 && a <= nodeCount) && (b > 0 && b <= nodeCount))) {
+	    if (!((a > 0 && a <= nodeCount) && (b > 0 && b <= nodeCount) && (w>=0 && w<=10000000))) {
 	      cout << "information about edges is iscorrect\n";
 	      return 0;
 	    }
